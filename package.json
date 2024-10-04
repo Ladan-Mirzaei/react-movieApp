@@ -1,5 +1,6 @@
 {
   "name": "movie-app",
+  "homepage": "https://ladan-mirzaei.github.io/react-movieApp/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,9 +8,11 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "gh-pages": "^6.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
