@@ -2,40 +2,56 @@ import { useState } from "react";
 import { initialMovies } from "./data";
 import Movie from "./component/Movie";
 import "./App.css";
+import "./component/style.css";
 
 function App() {
   const [movies, setMovies] = useState(initialMovies);
   const [favoritemovie, setfavoritemovie] = useState([]);
+  const [showFavorites, setShowFavorites] = useState(false);
 
-  function handleMovieAdd(title) {
-    setfavoritemovie([...favoritemovie, title]);
+  function handleFavorite(movie) {
+    if (!favoritemovie.includes(movie)) {
+      setfavoritemovie([...favoritemovie, movie]);
+      movie.favorite = true;
+    } else {
+      setfavoritemovie(favoritemovie.filter((item) => item !== movie));
+      movie.favorite = false;
+    }
   }
-  console.log(favoritemovie);
+  function handleMovieDelete(movie) {
+    setfavoritemovie(favoritemovie.filter((item) => item !== movie));
+    movie.favorite = false;
+  }
 
-  function handlemovidelete(movieToDelete) {
-    setMovies(movies.filter((item) => item !== movieToDelete)); // Filtering out the selected name
-  }
   return (
     <div>
-      <h1>Welcome to Movi APP!</h1>
-      <div class="container-movie">
-        {movies.map((item) => (
-          <Movie
-            key={item.title}
-            movie={item}
-            movieAdd={handleMovieAdd}
-            movieDelete={handlemovidelete}
-          />
-        ))}
+      <header>
+        <h1>Movie App</h1>
+        <nav>
+          <a onClick={() => setShowFavorites(false)}>All Movies</a>
+          <a onClick={() => setShowFavorites(true)}>Favorite Movies</a>
+        </nav>
+      </header>
+
+      <div className="container-movie">
+        {!showFavorites
+          ? movies.map((item) => (
+              <Movie
+                key={item.title}
+                movie={item}
+                movieAddFavorite={handleFavorite}
+                // movieToDelete={handleMovieDelete}
+              />
+            ))
+          : favoritemovie.map((item) => (
+              <Movie
+                key={item.title}
+                movie={item}
+                movieAddFavorite={handleFavorite}
+                movieToDelete={handleMovieDelete}
+              />
+            ))}
       </div>
-      <p>
-        {favoritemovie.map((item) => (
-          <li key={item.title}>
-            {item.title} <p>Released: {item.released}</p>
-            <p>Director: {item.director}</p>
-          </li>
-        ))}
-      </p>
     </div>
   );
 }
